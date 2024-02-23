@@ -5,6 +5,7 @@ import jakarta.persistence.Tuple
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
 import jakarta.persistence.criteria.Root
+import org.hibernate.query.sqm.SqmExpressible
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -25,7 +26,7 @@ class GroovySBApp {
         @Autowired
         EntityManager entityManager
 
-        @GetMapping("/groovy/failure")
+        @GetMapping("/groovy")
         void groovyFails() {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
@@ -49,7 +50,7 @@ class GroovySBApp {
              */
 
             try {
-                criteriaQuery.select(builder.tuple(root.get("id").alias("employeeId")));
+                criteriaQuery.select(builder.tuple(root.get("id").alias("employeeId") as SqmExpressible));
             } catch (Exception e) {
                 println "Exception from criteriaQuery.select(builder.tuple(root.get(\"id\").alias(\"employeeId\")));"
                 e.printStackTrace()
